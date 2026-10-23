@@ -1,0 +1,62 @@
+name: CI/CD Pipeline
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Testes e Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Instalar dependências
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Testes automatizados
+        run: npm run test
+
+      - name: Build de produção
+        run: npm run build
+
+      - name: Preparar arquivos para o Github Pages
+        if: github.ref == 'refs/heads/main'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: www/
+
+deploy:
+  name: Deploy para o GitHub Pages
+  needs: build
+  if: github.ref == 'refs/heads/main'
+  runs-on: ubuntu-latest
+  enviroment:
+    name: github-pages
+    url: ${{ setps.deployment.outputs.page_url }}
+  setps:
+    - name: Publicar no GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4
