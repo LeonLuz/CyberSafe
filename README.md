@@ -1,6 +1,6 @@
 # CyberSafe (versão mobile)
 
-![CI](https://github.com/leonluz/CyberSafe/actions/workflows/ci.yml/badge.svg)
+![CI](https://github.com/LeonLuz/CyberSafe/blob/main/src/assets/Captura%20de%20tela%202026-09-03%20210628.png)
 
 App mobile (Ionic + Angular) de educação em cibersegurança, organizado em **trilhas de vídeos por faixa etária**. Este repositório também é a **demonstração prática de CI/CD** do seminário de Engenharia de Software 2 (UNIRIO).
 
